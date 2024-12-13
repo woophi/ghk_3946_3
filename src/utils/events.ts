@@ -11,7 +11,7 @@ type Payload = {
   term: number | 'Nan';
   percent: number | 'Nan';
   percent_down: number | 'Nan';
-  cost: number;
+  cost: number | 'Nan';
 };
 
 export const sendDataToGA = async (payload: Payload) => {

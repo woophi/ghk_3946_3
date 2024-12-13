@@ -3,13 +3,10 @@ import { ButtonMobile } from '@alfalab/core-components/button/mobile';
 import { CDNIcon } from '@alfalab/core-components/cdn-icon';
 import { Collapse } from '@alfalab/core-components/collapse';
 import { Gap } from '@alfalab/core-components/gap';
-import { Input } from '@alfalab/core-components/input';
 import { List } from '@alfalab/core-components/list';
-import { SelectMobile } from '@alfalab/core-components/select/mobile';
 import { Switch } from '@alfalab/core-components/switch';
 import { Typography } from '@alfalab/core-components/typography';
 import { useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import longread from './assets/longread.jpg';
 import rubIcon from './assets/rubIcon.png';
 import sber from './assets/sber.png';
@@ -18,18 +15,6 @@ import { ThxLayout } from './thx/ThxLayout';
 import { sendDataToGA } from './utils/events';
 import { getWordEnding } from './utils/words';
 
-const OPTIONS = [
-  { key: '7 дней', value: 7, content: '7 дней' },
-  { key: '30 дней', value: 30, content: '30 дней' },
-];
-const SAFE_OPTIONS = [
-  { title: '100%', value: 100 },
-  { title: '50%', value: 50 },
-  { title: '30%', value: 30 },
-  { title: '10%', value: 10 },
-  { title: '5%', value: 5 },
-];
-
 export const App = () => {
   const [loading, setLoading] = useState(false);
   const [thxShow, setThx] = useState(false);
@@ -37,17 +22,11 @@ export const App = () => {
   const [price, setPrice] = useState(268.7);
   const [count, setCount] = useState(1);
   const [selectedEns, setSelectedEns] = useState(true);
-  const [reqType, setReqTpe] = useState(7);
-  const [safeOption, setSafeOption] = useState(100);
+  const [safeOption, setSafeOption] = useState(5);
 
-  const percentageLoss = reqType === 7 ? 0.05 : 0.2;
   const sum = price * count;
-  const percantageSafe = safeOption / 100;
 
-  const safeSum = Number((percentageLoss * sum * percantageSafe).toFixed(2));
-  const safeValue = Number((safeSum / 2).toFixed(2));
-
-  const total = selectedEns ? safeValue + sum : sum;
+  const total = selectedEns ? sum : sum;
 
   const submit = () => {
     window.gtag('event', 'Buy_insurance_3946_click_var3');
@@ -56,10 +35,10 @@ export const App = () => {
     sendDataToGA({
       quantity: count,
       price,
-      term: reqType,
+      term: 'Nan',
       percent: safeOption,
       percent_down: 'Nan',
-      cost: safeValue,
+      cost: 'Nan',
     }).then(() => {
       setThx(true);
       setLoading(false);
@@ -77,6 +56,12 @@ export const App = () => {
   };
   const onDownCount = () => {
     setCount(v => (v <= 1 ? 1 : v - 1));
+  };
+  const onUpPercentage = () => {
+    setSafeOption(v => (v >= 100 ? 100 : v + 1));
+  };
+  const onDownPercentage = () => {
+    setSafeOption(v => (v <= 1 ? 1 : v - 1));
   };
 
   if (thxShow) {
@@ -303,7 +288,7 @@ export const App = () => {
             reversed
             checked={selectedEns}
             label="Защитить сделку"
-            hint="Если стоимость актива упадет и вы зафиксируете позицию в период действия защиты, мы компенсируем убытки согласно выбранным настройкам."
+            hint="Если стоимость актива упадет на указанный вами уровень, мы автоматически его продадим."
             onChange={() => {
               window.gtag('event', 'insurance_3946_click_var3');
               setSelectedEns(!selectedEns);
@@ -312,37 +297,31 @@ export const App = () => {
           />
 
           <Collapse expanded={selectedEns}>
-            <SelectMobile
-              options={OPTIONS}
-              size={48}
-              block
-              onChange={p => {
-                setReqTpe(p.selected?.value ?? 7);
-              }}
-              selected={OPTIONS.find(o => o.value === reqType)}
-              label="Срок защиты"
-              labelView="outer"
-            />
-            <div style={{ marginTop: '1rem' }}>
-              <Typography.Text view="component-secondary" color="secondary">
-                Объём потенциального убытка для защиты
-              </Typography.Text>
-              <Swiper spaceBetween={12} slidesPerView="auto" style={{ marginTop: '.5rem' }}>
-                {SAFE_OPTIONS.map(o => (
-                  <SwiperSlide
-                    onClick={() => setSafeOption(o.value)}
-                    className={appSt.swSlide({ selected: safeOption === o.value })}
-                    key={o.value}
-                  >
-                    {o.title}
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            </div>
+            <div>
+              <div className={appSt.inputContainer}>
+                <div className={appSt.inputValue}>
+                  <Typography.Text tag="p" view="primary-medium" defaultMargins={false}>
+                    {safeOption}
+                  </Typography.Text>
+                  <Typography.Text tag="p" view="primary-medium" defaultMargins={false}>
+                    %
+                  </Typography.Text>
+                </div>
 
-            <div className={appSt.inputs}>
-              <Input readOnly label="Защищенная сумма" labelView="outer" value={`${safeSum.toLocaleString('ru')} ₽`} />
-              <Input readOnly label="Стоимость" labelView="outer" value={`${safeValue.toLocaleString('ru')} ₽`} />
+                <div className={appSt.inputActions}>
+                  <span onClick={onDownPercentage} style={{ display: 'inline-flex' }}>
+                    <CDNIcon name="glyph_minus_m" className={appSt.inputActionsMinus} />
+                  </span>
+                  <div className={appSt.inputActionsHR} />
+
+                  <span onClick={onUpPercentage} style={{ display: 'inline-flex' }}>
+                    <CDNIcon name="glyph_plus_m" />
+                  </span>
+                </div>
+              </div>
+              <Typography.Text view="component-secondary" color="secondary">
+                При падении на какой процент следует продать актив
+              </Typography.Text>
             </div>
           </Collapse>
         </div>
