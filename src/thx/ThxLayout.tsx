@@ -28,10 +28,10 @@ export const ThxLayout = ({ selectedEns }: { selectedEns: boolean }) => {
         <ButtonMobile
           block
           view="primary"
-          href="alfabank://"
+          href="a-investments://CA?type=isinFromCurrent&value=RU0009029540"
           onClick={() => window.gtag('event', 'Buy_no_insurance_3946_click_var3')}
         >
-          Подать заявку без страхования
+          Подать заявку
         </ButtonMobile>
       </div>
     </>
