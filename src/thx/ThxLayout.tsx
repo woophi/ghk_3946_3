@@ -4,24 +4,22 @@ import { Typography } from '@alfalab/core-components/typography';
 import { appSt } from '../style.css';
 import { thxSt } from './style.css';
 
-export const ThxLayout = ({ selectedEns }: { selectedEns: boolean }) => {
+export const ThxLayout = ({}: { selectedEns: boolean }) => {
   return (
     <>
       <div className={thxSt.container}>
         <div className={thxSt.rocket}>
-          <CDNIcon className={thxSt.icon} name={selectedEns ? 'glyph_screwdriver-paint-brush_m' : 'glyph_briefcase_m'} />
+          <CDNIcon className={thxSt.icon} name="glyph_screwdriver-paint-brush_m" />
         </div>
 
         <Typography.TitleResponsive font="system" tag="h1" view="large" defaultMargins weight="bold">
-          {selectedEns
-            ? 'Страховка позиции по данному инструменту не доступна'
-            : 'Попробуйте подать торговое поручение иным способом'}
+          Не удалось выставить заявку!
         </Typography.TitleResponsive>
-        {selectedEns && (
-          <Typography.Text tag="p" view="primary-medium" defaultMargins={false}>
-            Попробуйте подать заявку без страхования позиции
-          </Typography.Text>
-        )}
+        <Typography.Text tag="p" view="primary-medium" defaultMargins={false}>
+          Благодарим за ваше время! Это экспериментальная форма заявки.
+          <br />
+          Попробуйте подать заявку снова.
+        </Typography.Text>
       </div>
 
       <div className={appSt.bottomBtn}>
