@@ -20,7 +20,7 @@ export const App = () => {
   const [loading, setLoading] = useState(false);
   const [thxShow, setThx] = useState(false);
   const [showBs, setShowBs] = useState(false);
-  const [price, setPrice] = useState(268.7);
+  const [price, setPrice] = useState(228.7);
   const [count, setCount] = useState(10);
   const [selectedEns, setSelectedEns] = useState(true);
   const [safeOption, setSafeOption] = useState(5);
