@@ -21,7 +21,7 @@ export const App = () => {
   const [thxShow, setThx] = useState(false);
   const [showBs, setShowBs] = useState(false);
   const [price, setPrice] = useState(268.7);
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState(10);
   const [selectedEns, setSelectedEns] = useState(true);
   const [safeOption, setSafeOption] = useState(5);
 
@@ -60,11 +60,12 @@ export const App = () => {
     setPrice(v => Number((v <= 0 ? 0 : v - 0.01).toFixed(2)));
   };
   const onUpCount = () => {
-    setCount(v => (v >= 999 ? 999 : v + 1));
+    setCount(v => (v >= 990 ? 990 : v + 10));
   };
   const onDownCount = () => {
-    setCount(v => (v <= 1 ? 1 : v - 1));
+    setCount(v => (v <= 10 ? 10 : v - 10));
   };
+
   const onUpPercentage = () => {
     setSafeOption(v => (v >= 100 ? 100 : v + 1));
   };
