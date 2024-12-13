@@ -6,10 +6,11 @@ import { Gap } from '@alfalab/core-components/gap';
 import { List } from '@alfalab/core-components/list';
 import { Switch } from '@alfalab/core-components/switch';
 import { Typography } from '@alfalab/core-components/typography';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import longread from './assets/longread.jpg';
 import rubIcon from './assets/rubIcon.png';
 import sber from './assets/sber.png';
+import { LS, LSKeys } from './ls';
 import { appSt } from './style.css';
 import { ThxLayout } from './thx/ThxLayout';
 import { sendDataToGA } from './utils/events';
@@ -24,6 +25,12 @@ export const App = () => {
   const [selectedEns, setSelectedEns] = useState(true);
   const [safeOption, setSafeOption] = useState(5);
 
+  useEffect(() => {
+    if (!LS.getItem(LSKeys.UserId, null)) {
+      LS.setItem(LSKeys.UserId, Date.now());
+    }
+  }, []);
+
   const sum = price * count;
 
   const total = selectedEns ? sum : sum;
@@ -36,9 +43,10 @@ export const App = () => {
       quantity: count,
       price,
       term: 'Nan',
-      percent: safeOption,
-      percent_down: 'Nan',
-      cost: 'Nan',
+      percent_down: selectedEns ? safeOption : 'Nan',
+      percent: 'Nan',
+      cost: 0,
+      id: LS.getItem(LSKeys.UserId, null) ?? 0,
     }).then(() => {
       setThx(true);
       setLoading(false);
@@ -190,11 +198,9 @@ export const App = () => {
                 <Typography.TitleResponsive font="system" tag="h2" view="xsmall" weight="bold">
                   Итого {total.toLocaleString('ru')} ₽
                 </Typography.TitleResponsive>
-                {selectedEns && (
-                  <Typography.Text color="secondary-inverted" tag="p" view="primary-medium" defaultMargins={false}>
-                    Включая защиту
-                  </Typography.Text>
-                )}
+                <Typography.Text color="secondary-inverted" tag="p" view="primary-medium" defaultMargins={false}>
+                  {selectedEns ? 'Включая защиту' : 'Без защиты'}
+                </Typography.Text>
               </div>
               <CDNIcon name="glyph_chevron-right_m" />
             </div>

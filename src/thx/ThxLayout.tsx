@@ -17,9 +17,11 @@ export const ThxLayout = ({ selectedEns }: { selectedEns: boolean }) => {
             ? 'Страховка позиции по данному инструменту не доступна'
             : 'Попробуйте подать торговое поручение иным способом'}
         </Typography.TitleResponsive>
-        <Typography.Text tag="p" view="primary-medium" defaultMargins={false}>
-          Попробуйте подать заявку без страхования позиции
-        </Typography.Text>
+        {selectedEns && (
+          <Typography.Text tag="p" view="primary-medium" defaultMargins={false}>
+            Попробуйте подать заявку без страхования позиции
+          </Typography.Text>
+        )}
       </div>
 
       <div className={appSt.bottomBtn}>
