@@ -22,7 +22,7 @@ export const App = () => {
   const [showBs, setShowBs] = useState(false);
   const [price, setPrice] = useState(228.7);
   const [count, setCount] = useState(10);
-  const [selectedEns, setSelectedEns] = useState(true);
+  const [selectedEns, setSelectedEns] = useState(false);
   const [safeOption, setSafeOption] = useState(5);
 
   useEffect(() => {
