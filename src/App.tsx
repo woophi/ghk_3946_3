@@ -7,7 +7,7 @@ import { List } from '@alfalab/core-components/list';
 import { Switch } from '@alfalab/core-components/switch';
 import { Typography } from '@alfalab/core-components/typography';
 import { useEffect, useState } from 'react';
-import longread from './assets/longread.jpg';
+import longread from './assets/longread.png';
 import rubIcon from './assets/rubIcon.png';
 import sber from './assets/sber.png';
 import { LS, LSKeys } from './ls';
@@ -110,7 +110,7 @@ export const App = () => {
         </Typography.TitleResponsive>
         <Typography.Text view="primary-medium">
           С осени 2022 года обыкновенные акции имели устойчивую тенденцию к росту и обновили максимумы с конца 2021 года. С
-          середины июля2024 года динамика котировок близка к Индексу МосБиржи
+          середины июля 2024 года динамика котировок близка к Индексу МосБиржи
         </Typography.Text>
 
         <Typography.TitleResponsive style={{ marginTop: '1rem' }} tag="h3" view="xsmall" font="system" weight="semibold">
